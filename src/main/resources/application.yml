@@ -1,0 +1,14 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /grpcDemo
+grpc:
+  netty-server:
+    keep-alive-time: 30s
+    max-inbound-message-size: 10MB    
+    on-collision-prefer-shaded-netty: false
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

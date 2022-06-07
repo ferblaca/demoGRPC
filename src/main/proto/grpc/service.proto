@@ -1,0 +1,90 @@
+/*
+ *  - API Product Example
+ * Example API used by -initilizr
+ */
+syntax = "proto3";
+package amginitz.v1;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.inditex.example.grpc.v1";
+
+/*
+ * Request for create operation.
+ */ 
+message CreateProductRequest {
+  Product product = 1;
+}
+
+/*
+ * Request for update operation.
+ */ 
+message ModifyProductRequest {
+  google.protobuf.StringValue id = 1;
+  Product product = 2;
+}
+
+/*
+ * Response for multiple product operations.
+ */ 
+message ProductResponseList {
+  repeated Product products = 1;
+}
+
+/*
+ * Response for unique product operations.
+ */ 
+message ProductResponse {
+  Product product = 1;
+}
+
+/*
+ * Product entity
+ */ 
+message Product {
+  google.protobuf.StringValue id = 1;
+  string name = 2;
+  google.protobuf.DoubleValue price = 3;
+  google.protobuf.Int32Value discount = 4;
+}
+
+/*
+ * Service definition
+ */ 
+service ProductEndPoint {
+  /*
+   * Find all products. The user must have any permission in the application.
+   */
+  rpc FindAllProducts(google.protobuf.Empty) returns (ProductResponseList) {}
+
+  /*
+   * Find all products streaming mode. The user must have any permission in the application.
+   */
+  rpc FindAllProductsStreaming(google.protobuf.Empty) returns (stream Product) {}
+
+  /*
+   *  Get the number of products. The user must have any permission in the application.
+   */
+  rpc Count(google.protobuf.Empty) returns (google.protobuf.Int64Value) {}
+
+  /*
+   * Find product by given id. The user must have any permission in the application.
+   */
+  rpc FindProductById(google.protobuf.StringValue) returns (ProductResponse) {}
+
+  /*
+   * Creates a new product. The user must have any permission in the application.
+   */ 
+  rpc CreateProduct(CreateProductRequest) returns (ProductResponse) {}
+
+  /*
+   * Updates a product. The user must have any permission in the application.
+   */
+  rpc ModifyProduct(ModifyProductRequest) returns (ProductResponse) {}
+
+  /*
+   * Deletes a product. The user must have a permission "admin".
+   */
+  rpc DeleteProduct(google.protobuf.StringValue) returns (google.protobuf.Empty) {}
+}
